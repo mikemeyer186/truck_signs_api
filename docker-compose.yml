@@ -10,6 +10,7 @@ services:
             - ./truck_signs_designs/settings/.env
         depends_on:
             - db
+        restart: on-failure
     db:
         image: postgres:15
         volumes:
@@ -18,6 +19,7 @@ services:
             - 5432:5432
         env_file:
             - ./truck_signs_designs/settings/.env
+        restart: on-failure
     nginx:
         build: ./nginx
         volumes:
@@ -26,6 +28,7 @@ services:
             - 8020:80
         depends_on:
             - web
+        restart: on-failure
 
 volumes:
     postgres_data:
