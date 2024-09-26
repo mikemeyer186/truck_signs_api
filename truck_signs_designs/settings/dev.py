@@ -3,8 +3,8 @@ from .base import *
 
 DEBUG = True
 
-env = environ.Env()
 # reading env file
+env = environ.Env()
 environ.Env.read_env()
 
 SECRET_KEY = env("SECRET_KEY")
