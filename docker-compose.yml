@@ -1,11 +1,11 @@
 services:
     web:
         build: ./
-        command: python manage.py runserver 0.0.0.0:8000
+        command: python manage.py runserver 0.0.0.0:8020
         volumes:
             - static_volume:/app/static
         expose:
-            - 8000
+            - 8020
         env_file:
             - ./truck_signs_designs/settings/.env
         depends_on:
@@ -23,7 +23,7 @@ services:
         volumes:
             - static_volume:/app/static
         ports:
-            - 8000:80
+            - 8020:80
         depends_on:
             - web
 
