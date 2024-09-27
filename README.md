@@ -11,10 +11,10 @@
 
 ## Table of Contents
 * [Description](#description)
-* [Local installation](#local_installation)
-* [Installation on VM](#installation_on_VM)
+* [Local installation](#local-installation)
+* [Installation on VM](#installation-on-vm)
 * [Screenshots of the Django Backend Admin Panel](#screenshots)
-* [Useful Links](#useful_links)
+* [Useful Links](#useful-links)
 
 
 
