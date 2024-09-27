@@ -11,7 +11,8 @@
 
 ## Table of Contents
 * [Description](#description)
-* [Installation](#installation)
+* [Local installation](#local_installation)
+* [Installation on VM](#installation_on_VM)
 * [Screenshots of the Django Backend Admin Panel](#screenshots)
 * [Useful Links](#useful_links)
 
@@ -43,7 +44,9 @@ Most of the views are CBV imported from _rest_framework.generics_, and they allo
 
 The behavior of some of the views had to be modified to address functionalities such as creation of order and payment, as in this case, for example, both functionalities are implemented in the same view, and so a _GenericAPIView_ was the view from which it inherits. Another example of this is the _UploadCustomerImage_ View that takes the vinyl template uploaded by the clients and creates a new product based on it.
 
-## Installation
+<br>
+
+## Local installation
 
 1. Clone the repo:
     ```bash
@@ -96,7 +99,60 @@ The behavior of some of the views had to be modified to address functionalities 
     ```bash
     python manage.py createsuperuser
     ```
+<br>
 
+## Installation on VM
+
+<br>
+
+> [!Important]
+> Be sure that `docker compose` is installed on your VM. If not, follow the official installation guide ->
+> [docs.docker.com/compose/install](https://docs.docker.com/compose/install/linux/#install-using-the-repository)
+
+<br>
+
+1. Clone the repository:
+    ```bash
+    git clone <INSERT URL>
+    ```
+
+2. Create a `.env` file in the directory:
+   ```bash
+   cd truck_signs_designs/settings
+   nano .env
+   ```
+   
+3. Enter your environment variables. The following values are important to get the API and the database running:
+   ```bash
+   SECRET_KEY=<your secret django key>
+   DB_NAME=<your db name>
+   DB_USER=<your db username>
+   DB_PASSWORD=<your db password>
+   DB_HOST=db
+   DB_PORT=5432
+   
+   POSTGRES_USER=<your db username>
+   POSTGRES_PASSWORD=<your db password>
+   POSTGRES_DB=trucksigns_db
+   
+   DJANGO_SUPERUSER_USERNAME=<your superuser name>
+   DJANGO_SUPERUSER_EMAIL=<your superuser email>
+   DJANGO_SUPERUSER_PASSWORD=<your superuser password>
+
+   VM_IP=<your host ip>
+   ```
+
+4. Run the containers:
+   ```bash
+   docker compose up -d --build 
+   ```
+
+5. Use the `truck_signs_API` in your web browser on port 8020:
+   ```
+   http://<your host ip>:8020/admin
+   ```
+
+<br>
 
 __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
 
