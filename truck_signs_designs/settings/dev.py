@@ -3,11 +3,11 @@ from .base import *
 
 DEBUG = True
 
-env = environ.Env()
 # reading env file
+env = environ.Env()
 environ.Env.read_env()
 
-SECRET_KEY= env("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
