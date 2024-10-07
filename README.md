@@ -105,12 +105,6 @@ The behavior of some of the views had to be modified to address functionalities 
 
 <br>
 
-> [!Important]
-> Be sure that `docker compose` is installed on your VM. If not, follow the official installation guide ->
-> [docs.docker.com/compose/install](https://docs.docker.com/compose/install/linux/#install-using-the-repository)
-
-<br>
-
 1. Clone the repository:
     ```bash
     git clone <INSERT URL>
@@ -142,12 +136,62 @@ The behavior of some of the views had to be modified to address functionalities 
    VM_IP=<your host ip>
    ```
 
-4. Run the containers:
+4. Create the network:
    ```bash
-   docker compose up -d --build 
+   docker network create truck_signs_network
+   ```
+   
+5. Create the volumes:
+   ```bash
+   docker volume create postgres_data
+   docker volume create static_volume
+   docker volume create media_volume
+   ```
+   
+6. Build `django` and `ngnix` images:
+   ```bash
+   docker build -t django-image .
+   docker build -t nginx-image ./nginx
    ```
 
-5. Use the `truck_signs_API` in your web browser on port 8020:
+7. Run the `postgres` container with latest image:
+   ```bash
+   docker run -d \
+     --name db \
+     --network truck_signs_network \
+     -v postgres_data:/var/lib/postgresql/data/ \
+     -p 5432:5432 \
+     --env-file ./truck_signs_designs/settings/.env \
+     --restart on-failure \
+     postgres:latest
+   ```
+
+8. Run the `django` container:
+   ```bash
+   docker run -d \
+     --name web \
+     --network truck_signs_network \
+     --env-file ./truck_signs_designs/settings/.env \
+     -v static_volume:/app/static \
+     -v media_volume:/app/media \
+     --restart on-failure \
+     django-image \
+     python manage.py runserver 0.0.0.0:8020
+   ```
+
+9. Run the `ngnix` container:
+   ```bash
+   docker run -d \
+     --name nginx \
+     --network truck_signs_network \
+     -v static_volume:/app/static \
+     -v media_volume:/app/media \
+     -p 8020:80 \
+     --restart on-failure \
+     nginx-image
+   ```
+
+10. Use the `truck_signs_API` in your web browser on port 8020:
    ```
    http://<your host ip>:8020/admin
    ```
